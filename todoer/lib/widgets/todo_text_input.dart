@@ -15,11 +15,15 @@ class TodoTextInput extends StatelessWidget {
     return Row(
       children: [
         Expanded(
-          child: TextField(
-            onSubmitted: onSubmit,
-            controller: todoTextController,
-            decoration: const InputDecoration(
-                border: OutlineInputBorder(), hintText: 'Enter a Todo'),
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: TextField(
+              onSubmitted: onSubmit,
+              controller: todoTextController,
+              decoration: const InputDecoration(
+                  hintText: 'Enter a Todo'
+              ),
+            ),
           ),
         ),
       ],

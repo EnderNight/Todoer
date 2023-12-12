@@ -1,11 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:hive_flutter/adapters.dart';
+import 'package:todoer/data/database.dart';
 
 import 'package:todoer/widgets/todo_item_widget.dart';
 import 'package:todoer/widgets/todo_text_input.dart';
 
-import 'domain/todo_item.dart';
+void main() async {
+  await Hive.initFlutter();
+  await Hive.openBox('todoBox');
 
-void main() => runApp(const TodoerApp());
+  runApp(const TodoerApp());
+}
 
 class TodoerApp extends StatelessWidget {
   const TodoerApp({super.key});
@@ -24,7 +29,6 @@ class TodoerApp extends StatelessWidget {
 }
 
 class HomePage extends StatefulWidget {
-
   const HomePage({super.key});
 
   @override
@@ -32,17 +36,25 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  final List<TodoItem> _items = [
-    TodoItem(text: 'Quoicoubeh', isDone: false),
-  ];
-
+  Database db = Database();
   final _todoTextController = TextEditingController();
 
   void createTodo(String text) {
     setState(() {
-      TodoItem newItem = TodoItem(text: text, isDone: false);
-      _items.add(newItem);
+      db.addItem(text);
       _todoTextController.clear();
+    });
+  }
+
+  void removeTodo(int index) {
+    setState(() {
+      db.removeItem(index);
+    });
+  }
+
+  void toggleTodo(int index) {
+    setState(() {
+      db.toggleItem(index);
     });
   }
 
@@ -50,21 +62,29 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('Todoer')),
-      body: Center(
-        child: Column(
-          children: [
-            Expanded(
-              child: ListView.builder(
-                  itemCount: _items.length,
-                  itemBuilder: (context, index) {
-                    return TodoItemWidget(todoItem: _items[index]);
-                  }),
-            ),
-            TodoTextInput(
-              todoTextController: _todoTextController,
-              onSubmit: createTodo,
-            ),
-          ],
+      body: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Center(
+          child: Column(
+            children: [
+              Expanded(
+                child: ListView.builder(
+                    itemCount: db.items.length,
+                    itemBuilder: (context, index) {
+                      return TodoItemWidget(
+                        text: db.items[index][0],
+                        isDone: db.items[index][1],
+                        onDeletePress: () => removeTodo(index),
+                        onTap: () => toggleTodo(index),
+                      );
+                    }),
+              ),
+              TodoTextInput(
+                todoTextController: _todoTextController,
+                onSubmit: createTodo,
+              ),
+            ],
+          ),
         ),
       ),
     );
