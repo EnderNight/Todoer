@@ -12,6 +12,7 @@ dependencies:
   flutter:
     sdk: flutter
 
+  flutter_launcher_icons: ^0.13.1
   hive: ^2.2.3
   hive_flutter: ^1.1.0
 
@@ -23,3 +24,7 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+
+flutter_launcher_icons:
+  android: "launcher_icon"
+  image_path: "assets/images/launcher_icon.png"
