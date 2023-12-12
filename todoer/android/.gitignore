@@ -11,3 +11,8 @@ GeneratedPluginRegistrant.java
 key.properties
 **/*.keystore
 **/*.jks
+/app/src/main/res/mipmap-mdpi/launcher_icon.png
+/app/src/main/res/mipmap-hdpi/launcher_icon.png
+/app/src/main/res/mipmap-xhdpi/launcher_icon.png
+/app/src/main/res/mipmap-xxhdpi/launcher_icon.png
+/app/src/main/res/mipmap-xxxhdpi/launcher_icon.png
