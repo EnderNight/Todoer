@@ -30,18 +30,22 @@ class _TodoItemWidgetState extends State<TodoItemWidget> {
             color: Theme.of(context).hoverColor,
             borderRadius: const BorderRadius.all(Radius.circular(5))),
         child: InkWell(
-          onTap: toggleDone,
-          child: Row(
-            children: [
-              Checkbox(value: widget.todoItem.isDone, onChanged: null),
-              Text(
-                widget.todoItem.text,
-                style: TextStyle(
-                    decoration: widget.todoItem.isDone
-                        ? TextDecoration.lineThrough
-                        : TextDecoration.none),
-              ),
-            ],
+          onTap: () {},
+          child: GestureDetector(
+            behavior: HitTestBehavior.opaque,
+            onTap: toggleDone,
+            child: Row(
+              children: [
+                Checkbox(value: widget.todoItem.isDone, onChanged: null),
+                Text(
+                  widget.todoItem.text,
+                  style: TextStyle(
+                      decoration: widget.todoItem.isDone
+                          ? TextDecoration.lineThrough
+                          : TextDecoration.none),
+                ),
+              ],
+            ),
           ),
         ),
       ),
