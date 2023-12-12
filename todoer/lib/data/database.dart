@@ -2,10 +2,11 @@ import 'package:hive/hive.dart';
 
 class Database {
   final Box box = Hive.box('todoBox');
-  List items = [];
+  List<(String, bool)> items = [];
 
   Database() {
-    items = box.get('todos', defaultValue: []);
+    items = box.get('todos', defaultValue: <List<(String, bool)>>[])
+        as List<(String, bool)>;
   }
 
   void _saveItems() {
@@ -13,7 +14,7 @@ class Database {
   }
 
   void addItem(String text) {
-    items.add([text, false]);
+    items.add((text, false));
 
     _saveItems();
   }
@@ -25,7 +26,10 @@ class Database {
   }
 
   void toggleItem(int index) {
-    items[index][1] = !items[index][1];
+    (String, bool) prev = items[index];
+    items.removeAt(index);
+
+    items.add((prev.$1, !prev.$2));
 
     _saveItems();
   }
