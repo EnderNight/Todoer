@@ -9,7 +9,7 @@ A simple Todo App
 Todos are persistent across app restarts and device reboots.
 
 ### Known bugs
-None for the moment
+[ [#1](/../../issues/1) ] The app won't start if it is launched for the first time.
 
 ### Installation
 See releases.
