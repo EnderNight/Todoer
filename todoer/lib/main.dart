@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/adapters.dart';
-import 'package:todoer/widgets/home_page.dart';
+import 'package:todoer/pages/home_page.dart';
 
 void main() async {
   await Hive.initFlutter();

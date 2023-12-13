@@ -47,8 +47,8 @@ class _HomePageState extends State<HomePage> {
                     itemCount: db.items.length,
                     itemBuilder: (BuildContext context, int index) {
                       return TodoItemWidget(
-                        text: db.items[index].$1,
-                        isDone: db.items[index].$2,
+                        text: db.items[index][0],
+                        isDone: db.items[index][1],
                         onDeletePress: () => removeTodo(index),
                         onTap: () => toggleTodo(index),
                       );
