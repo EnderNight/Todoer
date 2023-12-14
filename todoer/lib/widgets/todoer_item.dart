@@ -23,11 +23,21 @@ class TodoerItemWidget extends StatelessWidget {
             borderRadius: const BorderRadius.all(Radius.circular(10)),
             color: Theme.of(context).primaryColorLight,
           ),
-          child: Center(
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(todoerName),
+              children: <Widget>[
+                Expanded(
+                  child: Center(
+                    child: Text(
+                      todoerName,
+                      style: Theme.of(context).textTheme.displaySmall,
+                      textAlign: TextAlign.center,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                ),
                 IconButton(
                   onPressed: onDelete,
                   icon: const Icon(Icons.delete),

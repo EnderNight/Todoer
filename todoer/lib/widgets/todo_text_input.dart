@@ -15,7 +15,7 @@ class TodoTextInput extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
-      children: [
+      children: <Widget>[
         Expanded(
           child: Padding(
             padding: const EdgeInsets.all(8.0),

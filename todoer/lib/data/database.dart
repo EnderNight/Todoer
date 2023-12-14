@@ -1,7 +1,7 @@
 import 'package:hive/hive.dart';
 
 class Database {
-  final Box _box = Hive.box('todoBox');
+  final Box<dynamic> _box = Hive.box('todoBox');
   List items = [];
   List<String> todoers = <String>[];
 
@@ -17,6 +17,8 @@ class Database {
 
   void addTodoer(String name) {
     todoers.add(name);
+    items = [];
+    _saveTodoer(name);
   }
 
   void removeTodoer(String name) {
@@ -29,7 +31,7 @@ class Database {
   }
 
   void addTodo(String todoerName, String text) {
-    items.add([text, false]);
+    items.add(<Object>[text, false]);
 
     _saveTodoer(todoerName);
   }

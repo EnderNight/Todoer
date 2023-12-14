@@ -33,9 +33,10 @@ class _TodoersPageState extends State<TodoersPage> {
   }
 
   void onTodoerSelected(BuildContext context, int index) {
+    widget.db.loadTodos(widget.db.todoers[index]);
     Navigator.push(
         context,
-        MaterialPageRoute(
+        MaterialPageRoute<dynamic>(
           builder: (BuildContext context) => TodoItemsPage(
             db: widget.db,
             todoerName: widget.db.todoers[index],
