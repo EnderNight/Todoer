@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/adapters.dart';
-import 'package:todoer/pages/home_page.dart';
+import 'package:todoer/pages/todo_items_page.dart';
 
 void main() async {
   await Hive.initFlutter();
@@ -20,7 +20,7 @@ class TodoerApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
         useMaterial3: true,
       ),
-      home: const HomePage(),
+      home: const TodoItemsPage(),
     );
   }
 }

@@ -3,14 +3,14 @@ import 'package:todoer/data/database.dart';
 import 'package:todoer/widgets/todo_item.dart';
 import 'package:todoer/widgets/todo_text_input.dart';
 
-class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+class TodoItemsPage extends StatefulWidget {
+  const TodoItemsPage({super.key});
 
   @override
-  State<HomePage> createState() => _HomePageState();
+  State<TodoItemsPage> createState() => _TodoItemsPageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _TodoItemsPageState extends State<TodoItemsPage> {
   Database db = Database();
   final TextEditingController _todoTextController = TextEditingController();
 
