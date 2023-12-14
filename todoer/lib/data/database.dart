@@ -1,32 +1,50 @@
 import 'package:hive/hive.dart';
 
 class Database {
-  final Box box = Hive.box('todoBox');
+  final Box<dynamic> _box = Hive.box('todoBox');
   List items = [];
+  List<String> todoers = <String>[];
 
   Database() {
-    items = box.get('todos', defaultValue: []);
+    for (String name in _box.keys) {
+      todoers.add(name);
+    }
   }
 
-  void _saveItems() {
-    box.put('todos', items);
+  void _saveTodoer(String todoerName) {
+    _box.put(todoerName, items);
   }
 
-  void addItem(String text) {
-    items.add([text, false]);
-
-    _saveItems();
+  void addTodoer(String name) {
+    todoers.add(name);
+    items = [];
+    _saveTodoer(name);
   }
 
-  void removeItem(int index) {
+  void removeTodoer(String name) {
+    todoers.remove(name);
+    _box.delete(name);
+  }
+
+  void loadTodos(String todoerName) {
+    items = _box.get(todoerName, defaultValue: []);
+  }
+
+  void addTodo(String todoerName, String text) {
+    items.add(<Object>[text, false]);
+
+    _saveTodoer(todoerName);
+  }
+
+  void removeTodo(String todoerName, int index) {
     items.removeAt(index);
 
-    _saveItems();
+    _saveTodoer(todoerName);
   }
 
-  void toggleItem(int index) {
-    items[index][1] = !items[index][1];
+  void toggleTodo(String todoerName, int index, bool value) {
+    items[index][1] = value;
 
-    _saveItems();
+    _saveTodoer(todoerName);
   }
 }

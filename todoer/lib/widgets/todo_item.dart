@@ -4,7 +4,7 @@ class TodoItemWidget extends StatelessWidget {
   final String text;
   final bool isDone;
   final void Function() onDeletePress;
-  final void Function() onTap;
+  final void Function(bool?) onTap;
 
   const TodoItemWidget({
     super.key,
@@ -20,34 +20,54 @@ class TodoItemWidget extends StatelessWidget {
       padding: const EdgeInsets.all(8.0),
       child: Container(
         decoration: BoxDecoration(
-            color: Theme.of(context).hoverColor,
+            color: isDone
+                ? Theme.of(context).hoverColor
+                : Theme.of(context).primaryColorLight,
             borderRadius: const BorderRadius.all(Radius.circular(5))),
-        child: InkWell(
+        child: GestureDetector(
+          behavior: HitTestBehavior.opaque,
           onTap: () {},
-          child: GestureDetector(
-            behavior: HitTestBehavior.opaque,
-            onTap: onTap,
-            child: Row(
-              children: [
-                Checkbox(value: isDone, onChanged: null),
-                Expanded(
-                  child: Text(
-                    text,
-                    style: TextStyle(
-                        decoration: isDone
-                            ? TextDecoration.lineThrough
-                            : TextDecoration.none),
-                  ),
+          child: Row(
+            children: <Widget>[
+              Checkbox(value: isDone, onChanged: onTap),
+              Expanded(
+                child: Text(
+                  text,
+                  style: TextStyle(
+                      decoration: isDone
+                          ? TextDecoration.lineThrough
+                          : TextDecoration.none),
                 ),
-                IconButton(
-                  onPressed: onDeletePress,
-                  icon: const Icon(Icons.delete),
-                )
-              ],
-            ),
+              ),
+              BinButton(
+                onDeletePress: onDeletePress,
+                isDone: isDone,
+              )
+            ],
           ),
         ),
       ),
     );
+  }
+}
+
+class BinButton extends StatelessWidget {
+  const BinButton({
+    super.key,
+    required this.onDeletePress,
+    required this.isDone,
+  });
+
+  final void Function() onDeletePress;
+  final bool isDone;
+
+  @override
+  Widget build(BuildContext context) {
+    return isDone
+        ? IconButton(
+            onPressed: onDeletePress,
+            icon: const Icon(Icons.delete),
+          )
+        : const SizedBox.shrink();
   }
 }

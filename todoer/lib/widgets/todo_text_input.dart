@@ -5,24 +5,24 @@ class TodoTextInput extends StatelessWidget {
     super.key,
     required this.todoTextController,
     required this.onSubmit,
+    required this.hintText,
   });
 
   final TextEditingController todoTextController;
-  final Function(String) onSubmit;
+  final void Function(String) onSubmit;
+  final String hintText;
 
   @override
   Widget build(BuildContext context) {
     return Row(
-      children: [
+      children: <Widget>[
         Expanded(
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: TextField(
               onSubmitted: onSubmit,
               controller: todoTextController,
-              decoration: const InputDecoration(
-                  hintText: 'Enter a Todo'
-              ),
+              decoration: InputDecoration(hintText: hintText),
             ),
           ),
         ),

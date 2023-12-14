@@ -1,16 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/adapters.dart';
-import 'package:todoer/pages/home_page.dart';
+import 'package:todoer/data/database.dart';
+import 'package:todoer/pages/todoers_items_page.dart';
 
 void main() async {
   await Hive.initFlutter();
   await Hive.openBox('todoBox');
 
-  runApp(const TodoerApp());
+  Database db = Database();
+
+  runApp(TodoerApp(db: db));
 }
 
 class TodoerApp extends StatelessWidget {
-  const TodoerApp({super.key});
+  const TodoerApp({
+    super.key,
+    required this.db,
+  });
+
+  final Database db;
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +28,7 @@ class TodoerApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
         useMaterial3: true,
       ),
-      home: const HomePage(),
+      home: TodoersPage(db: db),
     );
   }
 }
