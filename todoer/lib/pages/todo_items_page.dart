@@ -4,39 +4,45 @@ import 'package:todoer/widgets/todo_item.dart';
 import 'package:todoer/widgets/todo_text_input.dart';
 
 class TodoItemsPage extends StatefulWidget {
-  const TodoItemsPage({super.key});
+  const TodoItemsPage({
+    super.key,
+    required this.db,
+    required this.todoerName,
+  });
+
+  final Database db;
+  final String todoerName;
 
   @override
   State<TodoItemsPage> createState() => _TodoItemsPageState();
 }
 
 class _TodoItemsPageState extends State<TodoItemsPage> {
-  Database db = Database();
   final TextEditingController _todoTextController = TextEditingController();
 
   void createTodo(String text) {
     setState(() {
-      db.addItem(text);
+      widget.db.addTodo(widget.todoerName, text);
       _todoTextController.clear();
     });
   }
 
   void removeTodo(int index) {
     setState(() {
-      db.removeItem(index);
+      widget.db.removeTodo(widget.todoerName, index);
     });
   }
 
   void toggleTodo(int index, bool isDone) {
     setState(() {
-      db.toggleItem(index, isDone);
+      widget.db.toggleTodo(widget.todoerName, index, isDone);
     });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Todoer')),
+      appBar: AppBar(title: Text(widget.todoerName)),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Center(
@@ -44,11 +50,11 @@ class _TodoItemsPageState extends State<TodoItemsPage> {
             children: <Widget>[
               Expanded(
                 child: ListView.builder(
-                    itemCount: db.items.length,
+                    itemCount: widget.db.items.length,
                     itemBuilder: (BuildContext context, int index) {
                       return TodoItemWidget(
-                        text: db.items[index][0],
-                        isDone: db.items[index][1],
+                        text: widget.db.items[index][0],
+                        isDone: widget.db.items[index][1],
                         onDeletePress: () => removeTodo(index),
                         onTap: (bool? isDone) => toggleTodo(index, isDone!),
                       );
@@ -57,6 +63,7 @@ class _TodoItemsPageState extends State<TodoItemsPage> {
               TodoTextInput(
                 todoTextController: _todoTextController,
                 onSubmit: createTodo,
+                hintText: 'Enter a Todo',
               ),
             ],
           ),
