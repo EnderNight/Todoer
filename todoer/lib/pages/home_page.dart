@@ -27,9 +27,9 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
-  void toggleTodo(int index) {
+  void toggleTodo(int index, bool isDone) {
     setState(() {
-      db.toggleItem(index);
+      db.toggleItem(index, isDone);
     });
   }
 
@@ -50,7 +50,7 @@ class _HomePageState extends State<HomePage> {
                         text: db.items[index][0],
                         isDone: db.items[index][1],
                         onDeletePress: () => removeTodo(index),
-                        onTap: () => toggleTodo(index),
+                        onTap: (bool? isDone) => toggleTodo(index, isDone!),
                       );
                     }),
               ),

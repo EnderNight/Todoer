@@ -24,8 +24,8 @@ class Database {
     _saveItems();
   }
 
-  void toggleItem(int index) {
-    items[index][1] = !items[index][1];
+  void toggleItem(int index, bool isDone) {
+    items[index][1] = isDone;
 
     _saveItems();
   }
