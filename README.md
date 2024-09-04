@@ -1,3 +1,3 @@
 # todoer
 
-A new Flutter project.
+A simple todo app.
