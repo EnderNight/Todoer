@@ -4,8 +4,28 @@ class Todo {
   final bool isDone;
 
   const Todo({
-    required this.id,
+    this.id = '',
     required this.title,
-    required this.isDone,
+    this.isDone = false,
   });
+
+  Todo toggle() {
+    return Todo(
+      id: id,
+      title: title,
+      isDone: !isDone,
+    );
+  }
+
+  Todo copyWith({
+    String? id,
+    String? title,
+    bool? isDone,
+  }) {
+    return Todo(
+      id: id ?? this.id,
+      title: title ?? this.title,
+      isDone: isDone ?? this.isDone,
+    );
+  }
 }
