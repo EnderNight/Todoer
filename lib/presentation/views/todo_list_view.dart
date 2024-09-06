@@ -10,13 +10,13 @@ class TodoListView extends StatelessWidget {
   void _onTodoToggle(BuildContext context, int index) {
     final todoCubit = context.read<TodoCubit>();
 
-    todoCubit.toggleTodo(todoCubit.state[index]);
+    todoCubit.toggleTodo(todoCubit.state.todos[index]);
   }
 
   void _onTodoDelete(BuildContext context, int index) {
     final todoCubit = context.read<TodoCubit>();
 
-    todoCubit.deleteTodo(todoCubit.state[index]);
+    todoCubit.deleteTodo(todoCubit.state.todos[index]);
   }
 
   @override
@@ -24,23 +24,54 @@ class TodoListView extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Todoer'),
+        actions: [
+          PopupMenuButton<TodoSortType>(
+              onSelected: (sortType) {
+                context.read<TodoCubit>().sortTodos(sortType);
+              },
+              itemBuilder: (_) => [
+                    const PopupMenuItem<TodoSortType>(
+                      value: TodoSortType.creationDate,
+                      child: Text('Creation date'),
+                    ),
+                    const PopupMenuItem<TodoSortType>(
+                      value: TodoSortType.alpha,
+                      child: Text('Alphabetically'),
+                    ),
+                    const PopupMenuItem<TodoSortType>(
+                      value: TodoSortType.todo,
+                      child: Text('To do'),
+                    ),
+                    const PopupMenuItem<TodoSortType>(
+                      value: TodoSortType.done,
+                      child: Text('Done'),
+                    ),
+                  ]),
+        ],
       ),
-      body: BlocBuilder<TodoCubit, List<Todo>>(builder: (_, todos) {
-        if (todos.isEmpty) {
-          return const Center(
-            child: Text('Nothing to do for now...'),
-          );
-        }
+      body: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: BlocBuilder<TodoCubit, TodoState>(builder: (_, state) {
+          if (state.todos.isEmpty) {
+            return const Center(
+              child: Text('Nothing to do for now...'),
+            );
+          }
 
-        return ListView.builder(
-          itemCount: todos.length,
-          itemBuilder: (context, index) => TodoTileWidget(
-            todo: todos[index],
-            onToggle: (_) => _onTodoToggle(context, index),
-            onDelete: () => _onTodoDelete(context, index),
-          ),
-        );
-      }),
+          return ListView.separated(
+            itemCount: state.todos.length,
+            itemBuilder: (context, index) => TodoTileWidget(
+              todo: state.todos[index],
+              onToggle: (_) => _onTodoToggle(context, index),
+              onDelete: () => _onTodoDelete(context, index),
+            ),
+            separatorBuilder: (_, __) => const Divider(
+              indent: 20,
+              endIndent: 20,
+            ),
+          );
+        }),
+      ),
       floatingActionButton: FloatingActionButton(
         tooltip: 'Add a todo',
         onPressed: () {

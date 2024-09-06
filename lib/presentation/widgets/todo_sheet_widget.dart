@@ -41,9 +41,7 @@ class _TodoSheetWidgetState extends State<TodoSheetWidget> {
           TextField(
             controller: controller,
           ),
-          const SizedBox(
-            height: 80,
-          ),
+          const SizedBox(height: 80),
           FilledButton.icon(
             onPressed: () {
               final newTodo = widget.todo.copyWith(title: controller.text);

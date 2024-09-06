@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:todoer/domain/todo_repository.dart';
 import 'package:todoer/presentation/cubits/todo_cubit.dart';
-import 'package:todoer/presentation/views/todo_list_page.dart';
+import 'package:todoer/presentation/views/todo_list_view.dart';
 
 class TodoerApp extends StatelessWidget {
   final TodoRepository repository;
@@ -18,10 +18,11 @@ class TodoerApp extends StatelessWidget {
       create: (_) => TodoCubit(repository)..loadTodos(),
       child: MaterialApp(
         title: 'Todoer',
+        debugShowCheckedModeBanner: false,
         theme: ThemeData(
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
         ),
-        home: const TodoListPage(),
+        home: const TodoListView(),
       ),
     );
   }
