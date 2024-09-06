@@ -30,4 +30,10 @@ class TodoCubit extends Cubit<List<Todo>> {
 
     loadTodos();
   }
+
+  Future<void> updateTodo(Todo todo) async {
+    await repository.updateTodo(todo);
+
+    loadTodos();
+  }
 }

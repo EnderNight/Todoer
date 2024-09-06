@@ -14,10 +14,14 @@ class TodoModel {
   @HiveField(2)
   final bool isDone;
 
+  @HiveField(3)
+  final DateTime creationDate;
+
   const TodoModel({
     required this.id,
     required this.title,
     required this.isDone,
+    required this.creationDate,
   });
 
   factory TodoModel.fromEntity(Todo todo) {
@@ -25,6 +29,7 @@ class TodoModel {
       id: todo.id,
       title: todo.title,
       isDone: todo.isDone,
+      creationDate: todo.creationDate,
     );
   }
 
@@ -33,6 +38,7 @@ class TodoModel {
       id: id,
       title: title,
       isDone: isDone,
+      creationDate: creationDate,
     );
   }
 }

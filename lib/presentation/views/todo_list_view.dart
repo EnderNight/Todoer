@@ -63,7 +63,10 @@ class TodoListView extends StatelessWidget {
                     TextButton(
                       onPressed: () {
                         final title = controller.text;
-                        final todo = Todo(title: title);
+                        final todo = Todo(
+                          title: title,
+                          creationDate: DateTime.now(),
+                        );
 
                         todoCubit.addTodo(todo);
 

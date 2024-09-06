@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:todoer/domain/todo.dart';
+import 'package:todoer/presentation/widgets/todo_sheet_widget.dart';
 
 class TodoTileWidget extends StatelessWidget {
   final Todo todo;
@@ -35,6 +36,15 @@ class TodoTileWidget extends StatelessWidget {
           Icons.cancel,
         ),
       ),
+      onTap: () => showModalBottomSheet(
+          context: context,
+          showDragHandle: true,
+          shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+          ),
+          builder: (_) {
+            return TodoSheetWidget(todo: todo);
+          }),
     );
   }
 }
