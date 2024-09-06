@@ -26,6 +26,9 @@ class TodoTileWidget extends StatelessWidget {
                 .copyWith(decoration: TextDecoration.lineThrough)
             : null,
       ),
+      subtitle: Row(
+        children: [Text(todo.priority.toString())],
+      ),
       leading: Checkbox(
         value: todo.isDone,
         onChanged: onToggle,

@@ -97,6 +97,7 @@ class TodoListView extends StatelessWidget {
                         final todo = Todo(
                           title: title,
                           creationDate: DateTime.now(),
+                          priority: TodoPriority.low,
                         );
 
                         todoCubit.addTodo(todo);
