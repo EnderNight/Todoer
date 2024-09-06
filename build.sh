@@ -4,9 +4,9 @@ VERSION=$(cat pubspec.yaml | grep version | cut -d ':' -f2 | tr -d ' ')
 BUILD_DIR=build/app/outputs/flutter-apk
 
 rm -rf dist/
-flutter clean -v
+flutter clean
 
-flutter build apk --split-per-abi -v
+flutter build apk --split-per-abi
 
 mkdir -vp dist/android
 
