@@ -1,16 +1,18 @@
 #!/bin/bash
 
-VERSION=$(cat pubspec.yaml | grep version | cut -d ':' -f2 | tr -d ' ')
+VERSION="$(cat pubspec.yaml | grep version | cut -d ':' -f2 | tr -d ' ')"
 BUILD_DIR=build/app/outputs/flutter-apk
+DIST_DIR=dist
 
-rm -rf dist/
-flutter clean
+rm -rf "${DIST_DIR}"
 
 flutter build apk --split-per-abi
 
-mkdir -vp dist/android
+mkdir -vp "${DIST_DIR}/android"
 
-mv -v ${BUILD_DIR}/app-arm64-v8a-release.apk dist/android/todoer-v${VERSION}.apk
-mv -v ${BUILD_DIR}/app-arm64-v8a-release.apk.sha1 dist/android/todoer-v${VERSION}.apk.sha1
+mv -v "${BUILD_DIR}/app-arm64-v8a-release.apk ${DIST_DIR}/android/todoer-v${VERSION}.apk"
+mv -v "${BUILD_DIR}/app-arm64-v8a-release.apk.sha1 ${DIST_DIR}/android/todoer-v${VERSION}.apk.sha1"
 
-zip -v dist/todoer-v${VERSION}-android.zip dist/android/*
+zip -v "${DIST_DIR}/todoer-v${VERSION}-android.zip ${DIST_DIR}/android/*"
+
+gh release create ${VERSION} --notes "Todoer release ${VERSION}" ${DIST_DIR}/*.zip
