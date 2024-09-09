@@ -10,9 +10,9 @@ flutter build apk --split-per-abi
 
 mkdir -vp "${DIST_DIR}/android"
 
-mv -v "${BUILD_DIR}/app-arm64-v8a-release.apk ${DIST_DIR}/android/todoer-v${VERSION}.apk"
-mv -v "${BUILD_DIR}/app-arm64-v8a-release.apk.sha1 ${DIST_DIR}/android/todoer-v${VERSION}.apk.sha1"
+mv -v "${BUILD_DIR}/app-arm64-v8a-release.apk" "${DIST_DIR}/android/todoer-v${VERSION}.apk"
+mv -v "${BUILD_DIR}/app-arm64-v8a-release.apk.sha1" "${DIST_DIR}/android/todoer-v${VERSION}.apk.sha1"
 
-zip -v "${DIST_DIR}/todoer-v${VERSION}-android.zip ${DIST_DIR}/android/*"
+zip -v "${DIST_DIR}/todoer-v${VERSION}-android.zip" ${DIST_DIR}/android/*
 
-gh release create ${VERSION} --notes "Todoer release ${VERSION}" ${DIST_DIR}/*.zip
+gh release create "v${VERSION}" --notes "Todoer release v${VERSION}" ${DIST_DIR}/*.zip
