@@ -6,12 +6,14 @@ class TodoTileWidget extends StatelessWidget {
   final Todo todo;
   final void Function(bool?) onToggle;
   final void Function() onDelete;
+  final void Function(String title, TodoPriority priority) onTodoUpdate;
 
   const TodoTileWidget({
     super.key,
     required this.todo,
     required this.onToggle,
     required this.onDelete,
+    required this.onTodoUpdate,
   });
 
   @override
@@ -27,7 +29,27 @@ class TodoTileWidget extends StatelessWidget {
             : null,
       ),
       subtitle: Row(
-        children: [Text(todo.priority.toString())],
+        children: [
+          switch (todo.priority) {
+            TodoPriority.low => const Icon(
+                Icons.circle,
+                size: 15,
+                color: Colors.green,
+              ),
+            TodoPriority.medium => const Icon(
+                Icons.circle,
+                size: 15,
+                color: Colors.orange,
+              ),
+            TodoPriority.high => const Icon(
+                Icons.circle,
+                size: 15,
+                color: Colors.red,
+              ),
+          },
+          const SizedBox(width: 5),
+          Text(todo.priority.toString()),
+        ],
       ),
       leading: Checkbox(
         value: todo.isDone,
@@ -46,7 +68,12 @@ class TodoTileWidget extends StatelessWidget {
             borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
           ),
           builder: (_) {
-            return TodoSheetWidget(todo: todo);
+            return TodoSheetWidget(
+              todo: todo,
+              validateBtnText: 'Update',
+              onValidate: onTodoUpdate,
+              shouldClear: false,
+            );
           }),
     );
   }

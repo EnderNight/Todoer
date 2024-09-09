@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:todoer/domain/todo.dart';
 import 'package:todoer/presentation/cubits/todo_cubit.dart';
+import 'package:todoer/presentation/widgets/todo_sheet_widget.dart';
 import 'package:todoer/presentation/widgets/todo_tile_widget.dart';
 
 class TodoListView extends StatelessWidget {
@@ -19,6 +20,28 @@ class TodoListView extends StatelessWidget {
     todoCubit.deleteTodo(todoCubit.state.todos[index]);
   }
 
+  void _onTodoUpdate(
+      BuildContext context, String title, TodoPriority priority, int index) {
+    final todoCubit = context.read<TodoCubit>();
+
+    todoCubit.updateTodo(todoCubit.state.todos[index].copyWith(
+      title: title,
+      priority: priority,
+    ));
+  }
+
+  void _ontTodoAdd(BuildContext context, String title, TodoPriority priority) {
+    final todoCubit = context.read<TodoCubit>();
+
+    final todo = Todo(
+      title: title,
+      creationDate: DateTime.now(),
+      priority: priority,
+    );
+
+    todoCubit.addTodo(todo);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -31,12 +54,16 @@ class TodoListView extends StatelessWidget {
               },
               itemBuilder: (_) => [
                     const PopupMenuItem<TodoSortType>(
-                      value: TodoSortType.creationDate,
-                      child: Text('Creation date'),
+                      value: TodoSortType.high,
+                      child: Text('High'),
                     ),
                     const PopupMenuItem<TodoSortType>(
-                      value: TodoSortType.alpha,
-                      child: Text('Alphabetically'),
+                      value: TodoSortType.medium,
+                      child: Text('Medium'),
+                    ),
+                    const PopupMenuItem<TodoSortType>(
+                      value: TodoSortType.low,
+                      child: Text('Low'),
                     ),
                     const PopupMenuItem<TodoSortType>(
                       value: TodoSortType.todo,
@@ -64,6 +91,8 @@ class TodoListView extends StatelessWidget {
               todo: state.todos[index],
               onToggle: (_) => _onTodoToggle(context, index),
               onDelete: () => _onTodoDelete(context, index),
+              onTodoUpdate: (title, priority) =>
+                  _onTodoUpdate(context, title, priority, index),
             ),
             separatorBuilder: (_, __) => const Divider(
               indent: 20,
@@ -75,40 +104,18 @@ class TodoListView extends StatelessWidget {
       floatingActionButton: FloatingActionButton(
         tooltip: 'Add a todo',
         onPressed: () {
-          final todoCubit = context.read<TodoCubit>();
-
-          showDialog(
+          showModalBottomSheet(
               context: context,
-              builder: (context) {
-                final controller = TextEditingController();
-
-                return AlertDialog(
-                  title: const Text('Add a todo'),
-                  actions: [
-                    TextButton(
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                      },
-                      child: const Text('Cancel'),
-                    ),
-                    TextButton(
-                      onPressed: () {
-                        final title = controller.text;
-                        final todo = Todo(
-                          title: title,
-                          creationDate: DateTime.now(),
-                          priority: TodoPriority.low,
-                        );
-
-                        todoCubit.addTodo(todo);
-
-                        Navigator.of(context).pop();
-                      },
-                      child: const Text('Add'),
-                    ),
-                  ],
-                  content: TextField(controller: controller),
-                );
+              showDragHandle: true,
+              shape: const RoundedRectangleBorder(
+                borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+              ),
+              builder: (_) {
+                return TodoSheetWidget(
+                    shouldClear: true,
+                    validateBtnText: 'Add',
+                    onValidate: (title, priority) =>
+                        _ontTodoAdd(context, title, priority));
               });
         },
         child: const Icon(Icons.add),

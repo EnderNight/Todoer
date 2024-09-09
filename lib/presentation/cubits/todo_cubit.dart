@@ -6,10 +6,17 @@ import 'package:equatable/equatable.dart';
 part 'todo_state.dart';
 
 enum TodoSortType {
-  creationDate,
-  alpha,
+  high,
+  medium,
+  low,
   done,
-  todo,
+  todo;
+
+  TodoPriority get priority => switch (this) {
+        high => TodoPriority.high,
+        low => TodoPriority.low,
+        _ => TodoPriority.medium,
+      };
 }
 
 class TodoCubit extends Cubit<TodoState> {
@@ -18,18 +25,23 @@ class TodoCubit extends Cubit<TodoState> {
   TodoCubit(this.repository)
       : super(const TodoState(
           [],
-          TodoSortType.creationDate,
+          TodoSortType.todo,
         ));
 
   void _sortTodos(List<Todo> todos, [TodoSortType? sortType]) {
     if (sortType != null && sortType == state.sortType) return;
 
     switch (sortType ?? state.sortType) {
-      case TodoSortType.creationDate:
-        todos.sort((t1, t2) => t1.creationDate.compareTo(t2.creationDate));
-        break;
-      case TodoSortType.alpha:
-        todos.sort((t1, t2) => t1.title.compareTo(t2.title));
+      case TodoSortType.high:
+      case TodoSortType.medium:
+      case TodoSortType.low:
+        todos.sort((t1, t2) => t1.priority == t2.priority
+            ? 0
+            : t1.priority == (sortType ?? state.sortType).priority
+                ? -1
+                : t2.priority == (sortType ?? state.sortType).priority
+                    ? 1
+                    : 0);
         break;
       case TodoSortType.done:
         todos.sort((t1, t2) => t1.isDone == t2.isDone
